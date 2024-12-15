@@ -1,5 +1,5 @@
 <?php
-include 'header.php';
+include 'includes/header.php';
 ?>
 
     <main class="container mx-auto flex justify-center">
@@ -8,5 +8,5 @@ include 'header.php';
 
 <?php include 'db/database.php' ?>
 <?php
-include 'footer.php';
+include 'includes/footer.php';
 ?>

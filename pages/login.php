@@ -28,7 +28,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 }
 ?>
-<?php include 'header.php'; ?>
+<?php include '../includes/header.php'; ?>
 
 <section class="container">
     <h2>Login</h2>
@@ -42,6 +42,5 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         <input type="password" name="password" required>
         <button type="submit">Login</button>
     </form>
-
-    <?php include 'footer.php'; ?>
 </section>
+<?php include '../includes/footer.php'; ?>
