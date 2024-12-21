@@ -26,8 +26,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 }
 ?>
 <?php include "../includes/header.php"; ?>
-
-<section class="container">
+<section class="container mx-auto">
     <h2>Login</h2>
     <?php if (isset($error)): ?>
         <p style="color: red;"><?= $error ?></p>
