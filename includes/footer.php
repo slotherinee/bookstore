@@ -1,23 +1,21 @@
 <footer class="container mx-auto p-4 flex justify-center">
-    <p>&copy; <?= date('Y'); ?> Bookstore. All Rights Reserved.</p>
+    <p>&copy; <?= date("Y") ?> Bookstore. All Rights Reserved.</p>
 </footer>
 
+<script src="https://code.jquery.com/jquery-3.7.1.slim.min.js" integrity="sha256-kmHvs0B+OpCW5GVHUNjv9rOmY0IvSIRcf7zGUDTDQM8=" crossorigin="anonymous"></script>
+
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const mobileMenuButton = document.getElementById('mobile-menu-button');
-        const mobileMenu = document.getElementById('mobile-menu');
+$(document).ready(() => {
+  $('#mobile-menu-button').click(() => {
+    $('#mobile-menu').toggleClass('hidden')
+    $('#mobile-menu').toggleClass('active')
+  })
 
-        // Mobile menu toggle
-        mobileMenuButton.addEventListener('click', function() {
-            mobileMenu.classList.toggle('active');
-            mobileMenu.classList.toggle('hidden');
-        });
-
-        // Close mobile menu when clicking outside
-        mobileMenu.addEventListener('click', function(e) {
-            if (e.target === mobileMenu) {
-                mobileMenu.classList.remove('active');
-            }
-        });
-    });
+  $(window).resize(() => {
+    if ($('#mobile-menu').hasClass('active')) {
+      $('#mobile-menu').removeClass('active')
+      $('#mobile-menu').addClass('hidden')
+    }
+  })
+})
 </script>

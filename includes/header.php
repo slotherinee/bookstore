@@ -125,13 +125,9 @@
         <nav class="text-center">
             <ul class="space-y-4">
                 <?php foreach ($headerLinks as $title => $link) {
-                    if (
-                        $title == "Admin" &&
-                        $_SESSION["user"]["role"] !== "admin"
-                    ) {
-                        continue;
+                    if (shouldShowLink($title)) {
+                        echo "<li><a href=\"$link\" class=\"text-white text-2xl\">$title</a></li>";
                     }
-                    echo "<li><a href=\"$link\" class=\"text-white text-2xl\">$title</a></li>";
                 } ?>
             </ul>
         </nav>
