@@ -1,3 +1,35 @@
+   <?php function shouldShowLink($title)
+   {
+       $isLoggedIn = isset($_SESSION["user"]);
+
+       if (
+           $title === "Admin" &&
+           (!$isLoggedIn || $_SESSION["user"]["role"] !== "admin")
+       ) {
+           return false;
+       }
+       if ($title === "Logout" && !$isLoggedIn) {
+           return false;
+       }
+       if ($title === "Register" && $isLoggedIn) {
+           return false;
+       }
+       if ($title === "Login" && $isLoggedIn) {
+           return false;
+       }
+       return true;
+   } ?>
+   <?php $headerLinks = [
+       "Home" => "/",
+       "Catalog" => "/pages/catalog.php",
+       "About" => "/pages/about.php",
+       "Contacts" => "/pages/contacts.php",
+       "Admin" => "/pages/admin.php",
+       "Login" => "/pages/login.php",
+       "Logout" => "/pages/logout.php",
+       "Register" => "/pages/registration.php",
+   ]; ?>
+
 <!doctype html>
 <html lang="en">
 <head>
@@ -12,15 +44,6 @@
             display: block;
         }
     </style>
-    <?php
-    $headerLinks = [
-            'Home' => '/',
-            'Catalog' => '/pages/catalog.php',
-            'About' => '/pages/about.php',
-            'Contacts' => '/pages/contacts.php',
-            'Admin' => '/pages/admin.php',
-    ]
-    ?>
 </head>
 <body class="min-h-screen flex flex-col justify-between">
 <header id="header" class="bg-white dark:bg-gray-800 h-16 sm:h-20 transition-all duration-300 ease-in-out z-50">
@@ -76,12 +99,17 @@
         <nav class="hidden sm:block">
             <ul class="flex space-x-4">
                 <?php foreach ($headerLinks as $title => $link): ?>
-                <?php if ($title == 'Admin' && !isset($_SESSION['admin'])) continue; ?>
-                    <li>
-                        <a href="<?= $link ?>" class="text-gray-600 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-400 <?= ($_SERVER['REQUEST_URI'] == $link) ? 'underline underline-offset-4' : '' ?>">
-                            <?= $title ?>
-                        </a>
-                    </li>
+                    <?php if (shouldShowLink($title)): ?>
+                        <li>
+                            <a
+                                href="<?= $link ?>"
+                                class="text-gray-600 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-400 <?= $_SERVER[
+                                    "REQUEST_URI"
+                                ] === $link
+                                    ? "underline underline-offset-4"
+                                    : "" ?>"><?= $title ?></a>
+                        </li>
+                    <?php endif; ?>
                 <?php endforeach; ?>
             </ul>
         </nav>
@@ -96,12 +124,15 @@
     <div class="flex items-center justify-center h-full">
         <nav class="text-center">
             <ul class="space-y-4">
-                <?php
-                foreach ($headerLinks as $title => $link) {
-                    if ($title == 'Admin' && !isset($_SESSION['admin'])) continue;
+                <?php foreach ($headerLinks as $title => $link) {
+                    if (
+                        $title == "Admin" &&
+                        $_SESSION["user"]["role"] !== "admin"
+                    ) {
+                        continue;
+                    }
                     echo "<li><a href=\"$link\" class=\"text-white text-2xl\">$title</a></li>";
-                }
-                ?>
+                } ?>
             </ul>
         </nav>
     </div>

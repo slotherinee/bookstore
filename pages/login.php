@@ -1,34 +1,31 @@
+<?php session_start(); ?>
+
 <?php
-include '../db/database.php';
-
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $username = $_POST['username'];
-    $password = $_POST['password'];
-
+include "../db/database.php";
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $username = $_POST["username"];
+    $password = $_POST["password"];
     $query = $pdo->prepare("SELECT * FROM users WHERE username = ?");
     $query->execute([$username]);
     $user = $query->fetch(PDO::FETCH_ASSOC);
-
-    if ($user && password_verify($password, $user['password'])) {
-        session_regenerate_id(true);
-        $_SESSION['user'] = [
-            'id' => $user['id'],
-            'username' => $user['username'],
-            'role' => $user['role']
+    if ($user && password_verify($password, $user["password"])) {
+        $_SESSION["user"] = [
+            "id" => $user["id"],
+            "username" => $user["username"],
+            "role" => $user["role"],
         ];
-
-        if ($user['role'] == 'admin') {
-            header('Location: admin.php');
+        if ($user["role"] == "admin") {
+            header("Location: admin.php");
         } else {
-            header('Location: index.php');
+            header("Location: ../index.php");
         }
         exit();
     } else {
-        $error = 'Invalid credentials!';
+        $error = "Invalid credentials!";
     }
 }
 ?>
-<?php include '../includes/header.php'; ?>
+<?php include "../includes/header.php"; ?>
 
 <section class="container">
     <h2>Login</h2>
@@ -43,4 +40,4 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         <button type="submit">Login</button>
     </form>
 </section>
-<?php include '../includes/footer.php'; ?>
+<?php include "../includes/footer.php"; ?>
