@@ -6,31 +6,17 @@
     </main>
 
 <?php include "db/database.php"; ?>
+<?php $env = parse_ini_file("db/.env"); ?>
 <?php try {
-    // Create users table
-    $pdo->exec("
-        CREATE TABLE IF NOT EXISTS users (
-            id INT AUTO_INCREMENT PRIMARY KEY,
-            username VARCHAR(255) NOT NULL UNIQUE,
-            password VARCHAR(255) NOT NULL,
-            role ENUM('user', 'admin') NOT NULL
-        )
-    ");
-    echo "Users table created successfully.<br>";
-    // Create books table
-    $pdo->exec("
-        CREATE TABLE IF NOT EXISTS books (
-            id INT AUTO_INCREMENT PRIMARY KEY,
-            title VARCHAR(255) NOT NULL,
-            author VARCHAR(255) NOT NULL,
-            description TEXT,
-            price DECIMAL(10, 2) NOT NULL,
-            cover_image VARCHAR(255)
-        )
-    ");
-    echo "Books table created successfully.<br>";
+    // Hash the password securely using password_hash
+    $hashedPassword = password_hash($env["ADMIN_PASSWORD"], PASSWORD_DEFAULT); // Prepare and execute the query
+    $query = $pdo->prepare(
+        "INSERT INTO users (username, password, role) VALUES (?, ?, ?)"
+    );
+    $query->execute(["admin", $hashedPassword, "admin"]);
+    echo "Admin user created successfully.";
 } catch (PDOException $e) {
-    echo "Error creating tables: " . $e->getMessage();
+    echo "Error creating admin user: " . $e->getMessage();
 } ?>
 
 <?php include "includes/footer.php"; ?>
