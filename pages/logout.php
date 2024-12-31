@@ -1,6 +1,6 @@
 <?php session_start(); ?>
 
-<?php // Check if the user is logged in
+<?php
 
 if (!isset($_SESSION["user"])) {
     header("Location: login.php");
@@ -8,11 +8,8 @@ if (!isset($_SESSION["user"])) {
 } ?>
 
 <?php if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Unset all of the session variables.
     $_SESSION = [];
 
-    // If it's desired to kill the session, also delete the session cookie.
-    // Note: This will destroy the session, and not just the session data!
     if (ini_get("session.use_cookies")) {
         $params = session_get_cookie_params();
         setcookie(
@@ -26,9 +23,9 @@ if (!isset($_SESSION["user"])) {
         );
     }
 
-    session_destroy(); // Destroy the session
+    session_destroy();
 
-    header("Location: login.php"); // Redirect to the login page
+    header("Location: login.php");
     exit();
 } ?>
 <?php include "../includes/header.php"; ?>
